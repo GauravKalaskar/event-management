@@ -138,32 +138,7 @@ const LoginPage = () => {
             </Link>
           </p>
 
-          {/* Demo credentials */}
-          <div className="mt-10 p-6 bg-surface-50 dark:bg-surface-900 rounded-2xl border-2 border-surface-200 dark:border-surface-800 shadow-sm">
-            <div className="flex items-center justify-center gap-3 mb-6">
-              <div className="h-px bg-surface-300 dark:bg-surface-700 flex-1"></div>
-              <p className="text-xs font-bold text-surface-500 uppercase tracking-widest text-center">Demo Credentials</p>
-              <div className="h-px bg-surface-300 dark:bg-surface-700 flex-1"></div>
-            </div>
-            
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {[
-                { role: 'Admin', icon: '👨‍💼', email: 'admin123@gmail.com', pass: '233862' },
-                { role: 'Student', icon: '🎓', email: 'john@college.edu', pass: 'student123' },
-              ].map((d) => (
-                <button
-                  key={d.role}
-                  type="button"
-                  onClick={() => { setEmail(d.email); setPassword(d.pass); }}
-                  className="text-left p-3 bg-white dark:bg-surface-800 rounded-xl border border-surface-200 dark:border-surface-700 hover:border-primary-300 dark:hover:border-primary-700 hover:shadow-md transition-all duration-300 cursor-pointer group"
-                >
-                  <p className="font-bold text-surface-800 dark:text-surface-200 text-sm group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">{d.icon} {d.role}</p>
-                  <p className="text-xs text-surface-500 mt-1 truncate">{d.email}</p>
-                  <p className="text-xs text-surface-400 font-mono">{d.pass}</p>
-                </button>
-              ))}
-            </div>
-          </div>
+
         </div>
       </div>
     </div>
