@@ -39,9 +39,9 @@ const LoginPage = () => {
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-white/5 rounded-full blur-2xl" />
 
         {/* Content */}
-        <div className="relative z-10 flex flex-col justify-center px-16 text-white">
-          <div className="w-16 h-16 bg-white/10 backdrop-blur-xl rounded-2xl flex items-center justify-center mb-8 border border-white/20">
-            <HiOutlineAcademicCap className="w-8 h-8" />
+        <div className="relative z-10 flex flex-col justify-center items-center px-8 lg:px-20 text-white w-full h-full text-center lg:text-left lg:items-start">
+          <div className="w-20 h-20 bg-white/10 backdrop-blur-xl rounded-3xl flex items-center justify-center mb-10 border border-white/20 shadow-2xl">
+            <HiOutlineAcademicCap className="w-10 h-10" />
           </div>
           <h1 className="text-5xl font-extrabold leading-tight mb-6">
             Discover &<br />Join Amazing<br />
@@ -52,11 +52,11 @@ const LoginPage = () => {
           </p>
 
           {/* Stats */}
-          <div className="flex gap-8 mt-12">
+          <div className="flex gap-12 mt-16 pb-10">
             {[{ n: '500+', l: 'Students' }, { n: '50+', l: 'Events' }, { n: '20+', l: 'Categories' }].map((s) => (
-              <div key={s.l} className="text-center">
-                <p className="text-3xl font-extrabold">{s.n}</p>
-                <p className="text-sm text-primary-300/70 mt-1">{s.l}</p>
+              <div key={s.l} className="text-center lg:text-left">
+                <p className="text-4xl font-black tracking-tight">{s.n}</p>
+                <p className="text-sm text-primary-200 mt-2 font-semibold uppercase tracking-wider">{s.l}</p>
               </div>
             ))}
           </div>
@@ -139,11 +139,16 @@ const LoginPage = () => {
           </p>
 
           {/* Demo credentials */}
-          <div className="mt-8 p-5 bg-surface-50 dark:bg-surface-900 rounded-2xl border border-surface-200 dark:border-surface-800">
-            <p className="text-xs font-bold text-surface-400 uppercase tracking-widest text-center mb-3">Demo Credentials</p>
-            <div className="grid grid-cols-2 gap-3">
+          <div className="mt-10 p-6 bg-surface-50 dark:bg-surface-900 rounded-2xl border-2 border-surface-200 dark:border-surface-800 shadow-sm">
+            <div className="flex items-center justify-center gap-3 mb-6">
+              <div className="h-px bg-surface-300 dark:bg-surface-700 flex-1"></div>
+              <p className="text-xs font-bold text-surface-500 uppercase tracking-widest text-center">Demo Credentials</p>
+              <div className="h-px bg-surface-300 dark:bg-surface-700 flex-1"></div>
+            </div>
+            
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               {[
-                { role: 'Admin', icon: '👨‍💼', email: 'admin@college.edu', pass: 'admin123' },
+                { role: 'Admin', icon: '👨‍💼', email: 'admin123@gmail.com', pass: '233862' },
                 { role: 'Student', icon: '🎓', email: 'john@college.edu', pass: 'student123' },
               ].map((d) => (
                 <button

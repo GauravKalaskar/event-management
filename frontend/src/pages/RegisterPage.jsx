@@ -5,7 +5,7 @@ import { toast } from 'react-toastify';
 import { HiOutlineAcademicCap, HiOutlineMail, HiOutlineLockClosed, HiOutlineUser, HiOutlineArrowRight } from 'react-icons/hi';
 
 const RegisterPage = () => {
-  const [form, setForm] = useState({ name: '', email: '', password: '', confirmPassword: '', role: 'student' });
+  const [form, setForm] = useState({ name: '', email: '', password: '', confirmPassword: '' });
   const [loading, setLoading] = useState(false);
   const { register } = useAuth();
   const navigate = useNavigate();
@@ -33,9 +33,9 @@ const RegisterPage = () => {
       <div className="hidden lg:flex lg:w-1/2 relative overflow-hidden bg-gradient-to-br from-primary-600 via-primary-700 to-primary-900">
         <div className="absolute top-20 left-20 w-72 h-72 bg-accent-500/30 rounded-full blur-3xl animate-float" />
         <div className="absolute bottom-20 right-20 w-96 h-96 bg-primary-400/20 rounded-full blur-3xl animate-float" style={{ animationDelay: '3s' }} />
-        <div className="relative z-10 flex flex-col justify-center px-16 text-white">
-          <div className="w-16 h-16 bg-white/10 backdrop-blur-xl rounded-2xl flex items-center justify-center mb-8 border border-white/20">
-            <HiOutlineAcademicCap className="w-8 h-8" />
+        <div className="relative z-10 flex flex-col justify-center items-center px-8 lg:px-20 text-white w-full h-full text-center lg:text-left lg:items-start">
+          <div className="w-20 h-20 bg-white/10 backdrop-blur-xl rounded-3xl flex items-center justify-center mb-10 border border-white/20 shadow-2xl">
+            <HiOutlineAcademicCap className="w-10 h-10" />
           </div>
           <h1 className="text-5xl font-extrabold leading-tight mb-6">
             Start Your<br />Campus<br />
@@ -95,27 +95,7 @@ const RegisterPage = () => {
               </div>
             </div>
 
-            <div>
-              <label className="block text-sm font-bold text-surface-700 dark:text-surface-300 mb-2">I am a</label>
-              <div className="grid grid-cols-2 gap-3">
-                {[{ role: 'student', icon: '🎓', label: 'Student' }, { role: 'admin', icon: '👨‍💼', label: 'Admin' }].map((r) => (
-                  <button
-                    key={r.role}
-                    type="button"
-                    onClick={() => setForm({ ...form, role: r.role })}
-                    className={`py-3.5 px-4 rounded-xl text-sm font-bold border-2 transition-all duration-300 ${
-                      form.role === r.role
-                        ? 'border-primary-500 bg-primary-50 text-primary-700 dark:bg-primary-950/50 dark:text-primary-300 dark:border-primary-400 shadow-md shadow-primary-500/10'
-                        : 'border-surface-200 dark:border-surface-700 text-surface-500 hover:border-surface-300 dark:hover:border-surface-600'
-                    }`}
-                  >
-                    {r.icon} {r.label}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            <button type="submit" disabled={loading} className="w-full btn-primary py-3.5 text-base flex items-center justify-center gap-2 mt-2">
+            <button type="submit" disabled={loading} className="w-full btn-primary py-3.5 text-base flex items-center justify-center gap-2 mt-6">
               {loading ? (
                 <span className="flex items-center gap-2"><span className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" /> Creating...</span>
               ) : (

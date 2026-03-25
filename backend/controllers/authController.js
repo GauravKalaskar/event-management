@@ -11,8 +11,9 @@ exports.register = async (req, res, next) => {
   try {
     const { name, email, password, role } = req.body;
 
-    if (!name || !email || !password) {
-      return res.status(400).json({ message: 'Please provide name, email, and password.' });
+    // Hardcoded restriction: prevent manual registration of the admin email
+    if (email === 'admin123@gmail.com') {
+      return res.status(403).json({ message: 'Cannot register with this email.' });
     }
 
     const existingUser = await User.findOne({ email });
@@ -20,10 +21,8 @@ exports.register = async (req, res, next) => {
       return res.status(400).json({ message: 'An account with this email already exists.' });
     }
 
-    // Only allow admin role if explicitly passed (you can restrict this further)
-    const userRole = role === 'admin' ? 'admin' : 'student';
-
-    const user = await User.create({ name, email, password, role: userRole });
+    // Force all new registrations to be students
+    const user = await User.create({ name, email, password, role: 'student' });
 
     const token = generateToken(user._id);
 
@@ -51,12 +50,38 @@ exports.login = async (req, res, next) => {
       return res.status(400).json({ message: 'Please provide email and password.' });
     }
 
+    // Hardcoded Admin Intercept
+    if (email === 'admin123@gmail.com' && password === '233862') {
+      let adminUser = await User.findOne({ email: 'admin123@gmail.com' });
+      
+      // Auto-create the admin in the database if it doesn't exist so they have a valid ObjectId
+      if (!adminUser) {
+        adminUser = await User.create({
+          name: 'admin',
+          email: 'admin123@gmail.com',
+          password: '233862',
+          role: 'admin',
+        });
+      }
+
+      const token = generateToken(adminUser._id);
+      return res.json({
+        token,
+        user: {
+          id: adminUser._id,
+          name: adminUser.name,
+          email: adminUser.email,
+          role: adminUser.role,
+        },
+      });
+    }
+
     const user = await User.findOne({ email }).select('+password');
     if (!user) {
       return res.status(401).json({ message: 'Invalid email or password.' });
     }
 
-    const isMatch = await user.comparePassword(password);
+    const isMatch = await user.matchPassword(password);
     if (!isMatch) {
       return res.status(401).json({ message: 'Invalid email or password.' });
     }
