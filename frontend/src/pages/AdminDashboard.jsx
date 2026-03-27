@@ -61,7 +61,7 @@ const AdminDashboard = () => {
         {/* Stats */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-10">
           {statCards.map((stat, i) => (
-            <div key={stat.label} className={`${stat.gradient} rounded-2xl p-7 shadow-xl ${stat.shadow} text-white relative overflow-hidden animate-fade-in-up`} style={{ animationDelay: `${i * 0.1}s` }}>
+            <Link to="/admin/events" key={stat.label} className={`block ${stat.gradient} rounded-2xl p-7 shadow-xl ${stat.shadow} text-white relative overflow-hidden animate-fade-in-up hover:-translate-y-1 hover:shadow-2xl transition-all duration-300`} style={{ animationDelay: `${i * 0.1}s` }}>
               <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full -translate-y-8 translate-x-8" />
               <div className="absolute bottom-0 left-0 w-24 h-24 bg-white/5 rounded-full translate-y-8 -translate-x-8" />
               <div className="relative z-10 flex items-center justify-between">
@@ -75,7 +75,7 @@ const AdminDashboard = () => {
                   <stat.icon className="w-7 h-7 text-white/80" />
                 </div>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
 

@@ -39,7 +39,7 @@ const LoginPage = () => {
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-white/5 rounded-full blur-2xl" />
 
         {/* Content */}
-        <div className="relative z-10 flex flex-col justify-center items-center px-8 lg:px-20 text-white w-full h-full text-center lg:text-left lg:items-start">
+        <div className="relative z-10 flex flex-col justify-center items-center px-12 lg:px-20 text-white w-full h-full text-center lg:text-left lg:items-start">
           <div className="w-20 h-20 bg-white/10 backdrop-blur-xl rounded-3xl flex items-center justify-center mb-10 border border-white/20 shadow-2xl">
             <HiOutlineAcademicCap className="w-10 h-10" />
           </div>

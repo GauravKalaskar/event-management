@@ -27,9 +27,9 @@ const StudentDashboard = () => {
   const registeredIds = registrations.map(r => r.eventId?._id);
 
   const stats = [
-    { label: 'Available Events', value: upcomingEvents.length, icon: HiOutlineCalendar, gradient: 'stat-indigo', shadow: 'shadow-primary-500/20' },
-    { label: 'My Registrations', value: registrations.length, icon: HiOutlineTicket, gradient: 'stat-emerald', shadow: 'shadow-green-500/20' },
-    { label: 'Upcoming', value: registrations.filter(r => new Date(r.eventId?.date) > new Date()).length, icon: HiOutlineClipboardList, gradient: 'stat-amber', shadow: 'shadow-amber-500/20' },
+    { label: 'Available Events', value: upcomingEvents.length, icon: HiOutlineCalendar, gradient: 'stat-indigo', shadow: 'shadow-primary-500/20', link: '/events' },
+    { label: 'My Registrations', value: registrations.length, icon: HiOutlineTicket, gradient: 'stat-emerald', shadow: 'shadow-green-500/20', link: '/student/registrations' },
+    { label: 'Upcoming', value: registrations.filter(r => new Date(r.eventId?.date) > new Date()).length, icon: HiOutlineClipboardList, gradient: 'stat-amber', shadow: 'shadow-amber-500/20', link: '/student/registrations' },
   ];
 
   return (
@@ -50,7 +50,7 @@ const StudentDashboard = () => {
         {/* Stats */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-10">
           {stats.map((stat, i) => (
-            <div key={stat.label} className={`${stat.gradient} rounded-2xl p-7 shadow-xl ${stat.shadow} text-white relative overflow-hidden animate-fade-in-up`} style={{ animationDelay: `${i * 0.1}s` }}>
+            <Link to={stat.link} key={stat.label} className={`block ${stat.gradient} rounded-2xl p-7 shadow-xl ${stat.shadow} text-white relative overflow-hidden animate-fade-in-up hover:-translate-y-1 hover:shadow-2xl transition-all duration-300`} style={{ animationDelay: `${i * 0.1}s` }}>
               <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full -translate-y-8 translate-x-8" />
               <div className="relative z-10 flex items-center justify-between">
                 <div>
@@ -63,7 +63,7 @@ const StudentDashboard = () => {
                   <stat.icon className="w-7 h-7 text-white/80" />
                 </div>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
 

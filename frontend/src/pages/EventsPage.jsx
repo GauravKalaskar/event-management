@@ -63,7 +63,7 @@ const EventsPage = () => {
 
         {/* Filters */}
         <div className="flex flex-col sm:flex-row gap-3 mb-8 animate-fade-in-up" style={{ animationDelay: '0.1s' }}>
-          <div className="relative flex-1">
+          <div className="relative flex-[2]">
             <HiOutlineSearch className="absolute left-3.5 top-1/2 -translate-y-1/2 w-5 h-5 text-surface-400" />
             <input
               type="text"
@@ -73,7 +73,7 @@ const EventsPage = () => {
               className="input"
             />
           </div>
-          <div className="relative sm:w-72">
+          <div className="relative flex-1">
             <HiOutlineLocationMarker className="absolute left-3.5 top-1/2 -translate-y-1/2 w-5 h-5 text-surface-400" />
             <input
               type="text"
@@ -91,7 +91,7 @@ const EventsPage = () => {
             {Array.from({ length: 6 }).map((_, i) => <EventCardSkeleton key={i} />)}
           </div>
         ) : events.length === 0 ? (
-          <div className="card p-16 text-center">
+          <div className="card p-16 text-center overflow-hidden">
             <div className="w-16 h-16 bg-surface-100 dark:bg-surface-800 rounded-2xl flex items-center justify-center mx-auto mb-4">
               <HiOutlineCalendar className="w-8 h-8 text-surface-400" />
             </div>

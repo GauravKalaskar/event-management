@@ -33,7 +33,7 @@ const RegisterPage = () => {
       <div className="hidden lg:flex lg:w-1/2 relative overflow-hidden bg-gradient-to-br from-primary-600 via-primary-700 to-primary-900">
         <div className="absolute top-20 left-20 w-72 h-72 bg-accent-500/30 rounded-full blur-3xl animate-float" />
         <div className="absolute bottom-20 right-20 w-96 h-96 bg-primary-400/20 rounded-full blur-3xl animate-float" style={{ animationDelay: '3s' }} />
-        <div className="relative z-10 flex flex-col justify-center items-center px-8 lg:px-20 text-white w-full h-full text-center lg:text-left lg:items-start">
+        <div className="relative z-10 flex flex-col justify-center items-center px-12 lg:px-20 text-white w-full h-full text-center lg:text-left lg:items-start">
           <div className="w-20 h-20 bg-white/10 backdrop-blur-xl rounded-3xl flex items-center justify-center mb-10 border border-white/20 shadow-2xl">
             <HiOutlineAcademicCap className="w-10 h-10" />
           </div>
