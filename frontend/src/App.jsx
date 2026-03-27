@@ -1,4 +1,4 @@
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useAuth } from './context/AuthContext';
@@ -14,9 +14,12 @@ import StudentDashboard from './pages/StudentDashboard';
 import EventsPage from './pages/EventsPage';
 import EventDetails from './pages/EventDetails';
 import MyRegistrations from './pages/MyRegistrations';
+import Footer from './components/Footer';
 
 function App() {
   const { user, loading } = useAuth();
+  const location = useLocation();
+  const isAuthPage = ['/login', '/register'].includes(location.pathname);
 
   if (loading) {
     return (
@@ -30,9 +33,10 @@ function App() {
   }
 
   return (
-    <div className="min-h-screen bg-surface-50 dark:bg-surface-950">
-      <Navbar />
-      <Routes>
+    <div className="min-h-screen bg-surface-50 dark:bg-surface-950 flex flex-col">
+      {!isAuthPage && <Navbar />}
+      <div className="flex-1">
+        <Routes>
         {/* Public routes */}
         <Route path="/login" element={user ? <Navigate to={user.role === 'admin' ? '/admin' : '/student'} /> : <LoginPage />} />
         <Route path="/register" element={user ? <Navigate to={user.role === 'admin' ? '/admin' : '/student'} /> : <RegisterPage />} />
@@ -54,6 +58,8 @@ function App() {
         <Route path="/" element={<Navigate to={user ? (user.role === 'admin' ? '/admin' : '/student') : '/login'} />} />
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
+      </div>
+      {!isAuthPage && <Footer />}
 
       <ToastContainer
         position="top-right"
