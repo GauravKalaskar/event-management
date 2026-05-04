@@ -1,27 +1,24 @@
-import { HiOutlineAcademicCap, HiOutlineHeart } from 'react-icons/hi';
+import { HiOutlineAcademicCap, HiHeart } from 'react-icons/hi';
 
 const Footer = () => {
   return (
-    <footer className="border-t border-surface-200 dark:border-surface-800 bg-white/80 dark:bg-surface-900/80 backdrop-blur-md">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-          {/* Brand */}
-          <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 bg-gradient-to-br from-primary-500 to-accent-500 rounded-xl flex items-center justify-center shadow-md shadow-primary-500/20">
-              <HiOutlineAcademicCap className="w-4 h-4 text-white" />
-            </div>
-            <span className="text-sm font-bold gradient-text">CampusEvents</span>
+    <footer className="bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800">
+      <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+        <div className="md:flex md:items-center md:justify-between">
+          <div className="flex justify-center md:justify-start items-center md:order-1">
+            <HiOutlineAcademicCap className="h-6 w-6 text-blue-600 dark:text-blue-500 mr-2" />
+            <span className="text-gray-900 dark:text-white font-bold text-lg">CampusEvents</span>
           </div>
-
-          {/* Copyright */}
-          <p className="text-sm text-surface-400 dark:text-surface-500 flex items-center gap-1">
-            Made with <HiOutlineHeart className="w-3.5 h-3.5 text-red-400" /> for college communities
-          </p>
-
-          {/* Year */}
-          <p className="text-xs text-surface-400 dark:text-surface-500 font-medium">
-            © {new Date().getFullYear()} CampusEvents
-          </p>
+          <div className="mt-4 md:mt-0 md:order-2">
+            <p className="text-center text-sm text-gray-500 dark:text-gray-400">
+              &copy; {new Date().getFullYear()} CampusEvents. All rights reserved.
+            </p>
+          </div>
+          <div className="mt-4 md:mt-0 md:order-3">
+             <p className="text-center text-sm text-gray-500 dark:text-gray-400 flex items-center justify-center">
+              Made with <HiHeart className="h-4 w-4 mx-1 text-red-500" /> for students
+            </p>
+          </div>
         </div>
       </div>
     </footer>

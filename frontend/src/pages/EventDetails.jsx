@@ -40,14 +40,14 @@ const EventDetails = () => {
   const formatDate = (d) => new Intl.DateTimeFormat('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit' }).format(new Date(d));
 
   if (loading) return (
-    <div className="min-h-screen flex items-center justify-center bg-surface-50 dark:bg-surface-950">
-      <div className="w-14 h-14 border-4 border-primary-200 dark:border-primary-900 border-t-primary-600 rounded-full animate-spin" />
+    <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900">
+      <div className="w-10 h-10 border-4 border-gray-200 dark:border-gray-700 border-t-blue-600 rounded-full animate-spin" />
     </div>
   );
 
   if (!event) return (
-    <div className="min-h-screen flex items-center justify-center bg-surface-50 dark:bg-surface-950">
-      <p className="text-surface-500 font-medium">Event not found.</p>
+    <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900">
+      <p className="text-gray-500 font-medium">Event not found.</p>
     </div>
   );
 
@@ -56,106 +56,119 @@ const EventDetails = () => {
   const capacityPercent = event.capacity > 0 ? Math.min(100, ((event.registrationCount || 0) / event.capacity) * 100) : 0;
 
   return (
-    <div className="min-h-screen bg-surface-50 dark:bg-surface-950 hero-pattern">
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <Link to="/events" className="inline-flex items-center gap-2 text-sm text-surface-500 hover:text-primary-600 dark:text-surface-400 dark:hover:text-primary-400 mb-8 font-semibold transition-colors group">
-          <HiOutlineArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" /> Back to Events
-        </Link>
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-8">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div className="mb-8">
+          <Link to="/events" className="inline-flex items-center text-sm font-medium text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300">
+            <HiOutlineArrowLeft className="mr-1 h-4 w-4" aria-hidden="true" />
+            Back to Events
+          </Link>
+        </div>
 
-        <div className="animate-fade-in-up">
+        <div>
           {/* Hero Image */}
           {event.image && (
-            <div className="rounded-3xl overflow-hidden mb-8 shadow-2xl shadow-surface-900/10 dark:shadow-surface-900/50">
-              <img src={event.image} alt={event.title} className="w-full h-72 sm:h-[24rem] object-cover" />
+            <div className="rounded-xl overflow-hidden mb-8 shadow-sm border border-gray-200 dark:border-gray-700">
+              <img src={event.image} alt={event.title} className="w-full h-64 sm:h-96 object-cover" />
             </div>
           )}
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            {/* Main */}
+            {/* Main Content */}
             <div className="lg:col-span-2 space-y-6">
               <div>
                 <div className="flex flex-wrap gap-2 mb-4">
-                  {isPast && <span className="px-3 py-1.5 text-xs font-bold bg-surface-200 dark:bg-surface-700 text-surface-500 rounded-full">Past Event</span>}
-                  {isFull && !isPast && <span className="px-3 py-1.5 text-xs font-bold bg-red-100 dark:bg-red-950/50 text-red-600 dark:text-red-400 rounded-full">Sold Out</span>}
-                  {isRegistered && <span className="px-3 py-1.5 text-xs font-bold bg-green-100 dark:bg-green-950/50 text-green-600 dark:text-green-400 rounded-full">✓ You're registered</span>}
+                  {isPast && <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-200">Past Event</span>}
+                  {isFull && !isPast && <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800 dark:bg-red-900/50 dark:text-red-300">Sold Out</span>}
+                  {isRegistered && <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900/50 dark:text-green-300">✓ Registered</span>}
                 </div>
-                <h1 className="text-3xl sm:text-4xl font-extrabold text-surface-900 dark:text-white tracking-tight leading-tight">
+                <h1 className="text-3xl sm:text-4xl font-extrabold text-gray-900 dark:text-white tracking-tight">
                   {event.title}
                 </h1>
               </div>
 
-              <div className="card p-7">
-                <h3 className="text-sm font-bold text-surface-400 uppercase tracking-widest mb-4">About this Event</h3>
-                <p className="text-surface-600 dark:text-surface-300 leading-relaxed whitespace-pre-wrap text-base">
+              <div className="bg-white dark:bg-gray-800 shadow-sm rounded-lg border border-gray-200 dark:border-gray-700 p-6">
+                <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-4">About this Event</h3>
+                <div className="prose dark:prose-invert max-w-none text-gray-600 dark:text-gray-300 whitespace-pre-wrap">
                   {event.description}
-                </p>
+                </div>
               </div>
             </div>
 
-            {/* Sidebar */}
-            <div className="space-y-5">
-              <div className="card p-6 space-y-5">
-                {[
-                  { icon: HiOutlineCalendar, bg: 'bg-primary-50 dark:bg-primary-950/40', color: 'text-primary-600 dark:text-primary-400', label: 'Date & Time', value: formatDate(event.date) },
-                  { icon: HiOutlineLocationMarker, bg: 'bg-accent-50 dark:bg-accent-950/40', color: 'text-accent-600 dark:text-accent-400', label: 'Location', value: event.location },
-                  ...(event.createdBy ? [{ icon: HiOutlineUser, bg: 'bg-purple-50 dark:bg-purple-950/40', color: 'text-purple-600 dark:text-purple-400', label: 'Organized by', value: event.createdBy.name }] : []),
-                ].map((item, i) => (
-                  <div key={i} className="flex items-start gap-3.5">
-                    <div className={`w-11 h-11 ${item.bg} rounded-xl flex items-center justify-center shrink-0`}>
-                      <item.icon className={`w-5 h-5 ${item.color}`} />
-                    </div>
-                    <div>
-                      <p className="text-xs font-bold text-surface-400 uppercase tracking-wider">{item.label}</p>
-                      <p className="text-sm font-bold text-surface-900 dark:text-surface-100 mt-0.5">{item.value}</p>
-                    </div>
+            {/* Sidebar Details */}
+            <div className="space-y-6">
+              <div className="bg-white dark:bg-gray-800 shadow-sm rounded-lg border border-gray-200 dark:border-gray-700 p-6 space-y-6">
+                <div className="flex items-start">
+                  <HiOutlineCalendar className="flex-shrink-0 mr-3 h-6 w-6 text-gray-400" aria-hidden="true" />
+                  <div>
+                    <h4 className="text-sm font-medium text-gray-900 dark:text-white">Date & Time</h4>
+                    <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">{formatDate(event.date)}</p>
                   </div>
-                ))}
+                </div>
 
-                {/* Capacity */}
-                <div className="flex items-start gap-3.5">
-                  <div className="w-11 h-11 bg-green-50 dark:bg-green-950/40 rounded-xl flex items-center justify-center shrink-0">
-                    <HiOutlineUsers className="w-5 h-5 text-green-600 dark:text-green-400" />
+                <div className="flex items-start">
+                  <HiOutlineLocationMarker className="flex-shrink-0 mr-3 h-6 w-6 text-gray-400" aria-hidden="true" />
+                  <div>
+                    <h4 className="text-sm font-medium text-gray-900 dark:text-white">Location</h4>
+                    <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">{event.location}</p>
                   </div>
-                  <div className="flex-1">
-                    <p className="text-xs font-bold text-surface-400 uppercase tracking-wider">Capacity</p>
-                    <p className="text-sm font-bold text-surface-900 dark:text-surface-100 mt-0.5">
-                      {event.registrationCount || 0} / {event.capacity > 0 ? event.capacity : '∞'}
+                </div>
+
+                {event.createdBy && (
+                  <div className="flex items-start">
+                    <HiOutlineUser className="flex-shrink-0 mr-3 h-6 w-6 text-gray-400" aria-hidden="true" />
+                    <div>
+                      <h4 className="text-sm font-medium text-gray-900 dark:text-white">Organized by</h4>
+                      <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">{event.createdBy.name}</p>
+                    </div>
+                  </div>
+                )}
+
+                <div className="flex items-start">
+                  <HiOutlineUsers className="flex-shrink-0 mr-3 h-6 w-6 text-gray-400" aria-hidden="true" />
+                  <div className="w-full">
+                    <h4 className="text-sm font-medium text-gray-900 dark:text-white">Capacity</h4>
+                    <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
+                      {event.registrationCount || 0} / {event.capacity > 0 ? event.capacity : 'Unlimited'} Registered
                     </p>
                     {event.capacity > 0 && (
-                      <div className="w-full bg-surface-200 dark:bg-surface-700 rounded-full h-2 mt-2">
-                        <div className="bg-gradient-to-r from-green-500 to-emerald-400 h-2 rounded-full transition-all duration-700" style={{ width: `${capacityPercent}%` }} />
+                      <div className="mt-2 w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                        <div className="bg-blue-600 h-2 rounded-full" style={{ width: `${capacityPercent}%` }} />
                       </div>
                     )}
                   </div>
                 </div>
               </div>
 
-              {/* Register Button */}
+              {/* Action Area */}
               {user && !isPast && (
                 <button
                   onClick={handleRegister}
                   disabled={isRegistered || isFull || registering}
-                  className={`w-full py-4 px-6 font-bold rounded-2xl transition-all duration-300 text-center text-base ${
+                  className={`w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white focus:outline-none focus:ring-2 focus:ring-offset-2 transition-colors ${
                     isRegistered
-                      ? 'bg-green-50 dark:bg-green-950/40 text-green-600 dark:text-green-400 border-2 border-green-200 dark:border-green-900'
+                      ? 'bg-green-600 hover:bg-green-700 focus:ring-green-500'
                       : isFull
-                      ? 'bg-surface-100 dark:bg-surface-800 text-surface-400 cursor-not-allowed'
-                      : 'btn-primary animate-pulse-glow'
+                      ? 'bg-gray-400 cursor-not-allowed'
+                      : 'bg-blue-600 hover:bg-blue-700 focus:ring-blue-500'
                   }`}
                 >
                   {registering ? (
-                    <span className="flex items-center justify-center gap-2">
-                      <span className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" /> Registering...
-                    </span>
-                  ) : isRegistered ? '✓ You are Registered' : isFull ? 'Event is Full' : (
-                    <span className="flex items-center justify-center gap-2"><HiOutlineTicket className="w-5 h-5" /> Register Now</span>
+                    'Registering...'
+                  ) : isRegistered ? (
+                    '✓ You are Registered'
+                  ) : isFull ? (
+                    'Event is Full'
+                  ) : (
+                    <span className="flex items-center"><HiOutlineTicket className="mr-2 h-5 w-5" /> Register Now</span>
                   )}
                 </button>
               )}
 
               {!user && (
-                <Link to="/login" className="block w-full btn-primary text-center py-4 text-base">
-                  <span>Login to Register</span>
+                <Link to="/login" className="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                  Login to Register
                 </Link>
               )}
             </div>
