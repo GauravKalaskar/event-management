@@ -2,23 +2,45 @@ const ConfirmModal = ({ isOpen, title, message, onConfirm, onCancel, confirmText
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 animate-fade-in" onClick={onCancel}>
-      <div className="absolute inset-0 bg-surface-900/60 backdrop-blur-sm" />
-      <div className="relative bg-white dark:bg-surface-900 rounded-2xl shadow-2xl shadow-surface-900/20 max-w-md w-full p-7 animate-fade-in-up border border-surface-200 dark:border-surface-800" onClick={(e) => e.stopPropagation()}>
-        <div className={`w-12 h-12 ${danger ? 'bg-red-100 dark:bg-red-950/50' : 'bg-primary-100 dark:bg-primary-950/50'} rounded-2xl flex items-center justify-center mb-5`}>
-          <span className="text-xl">{danger ? '⚠️' : '❓'}</span>
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+      <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true" onClick={onCancel}></div>
+
+      <div className="inline-block align-bottom bg-white dark:bg-gray-800 rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+        <div className="bg-white dark:bg-gray-800 px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+          <div className="sm:flex sm:items-start">
+            <div className={`mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full sm:mx-0 sm:h-10 sm:w-10 ${danger ? 'bg-red-100 dark:bg-red-900/50' : 'bg-blue-100 dark:bg-blue-900/50'}`}>
+              <span className={`text-xl ${danger ? 'text-red-600 dark:text-red-400' : 'text-blue-600 dark:text-blue-400'}`}>
+                {danger ? '⚠️' : '❓'}
+              </span>
+            </div>
+            <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+              <h3 className="text-lg leading-6 font-medium text-gray-900 dark:text-white" id="modal-title">
+                {title}
+              </h3>
+              <div className="mt-2">
+                <p className="text-sm text-gray-500 dark:text-gray-400">
+                  {message}
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
-        <h3 className="text-xl font-extrabold text-surface-900 dark:text-white mb-2">{title}</h3>
-        <p className="text-surface-500 dark:text-surface-400 mb-7 leading-relaxed">{message}</p>
-        <div className="flex gap-3 justify-end">
-          <button onClick={onCancel} className="px-6 py-2.5 text-sm font-bold text-surface-600 dark:text-surface-300 bg-surface-100 dark:bg-surface-800 hover:bg-surface-200 dark:hover:bg-surface-700 rounded-xl transition-all">
-            Cancel
-          </button>
-          <button onClick={onConfirm}
-            className={`px-6 py-2.5 text-sm font-bold text-white rounded-xl transition-all shadow-md hover:shadow-lg ${
-              danger ? 'bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 shadow-red-500/20' : 'btn-primary'
-            }`}>
+        <div className="bg-gray-50 dark:bg-gray-900/50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+          <button
+            type="button"
+            className={`w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 text-base font-medium text-white focus:outline-none focus:ring-2 focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm ${
+              danger ? 'bg-red-600 hover:bg-red-700 focus:ring-red-500' : 'bg-blue-600 hover:bg-blue-700 focus:ring-blue-500'
+            }`}
+            onClick={onConfirm}
+          >
             {confirmText}
+          </button>
+          <button
+            type="button"
+            className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 dark:border-gray-600 shadow-sm px-4 py-2 bg-white dark:bg-gray-800 text-base font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
+            onClick={onCancel}
+          >
+            Cancel
           </button>
         </div>
       </div>
