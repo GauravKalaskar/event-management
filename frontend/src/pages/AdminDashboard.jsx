@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { eventsAPI, registrationsAPI } from '../services/api';
-import { HiOutlineCalendar, HiOutlineUsers, HiOutlineClipboardList, HiOutlinePlusCircle, HiOutlineArrowRight, HiOutlineTrendingUp } from 'react-icons/hi';
+import { HiOutlineCalendar, HiOutlineUsers, HiOutlineTrendingUp, HiPlus } from 'react-icons/hi';
 
 const AdminDashboard = () => {
   const { user } = useAuth();
@@ -34,116 +34,136 @@ const AdminDashboard = () => {
   }, []);
 
   const statCards = [
-    { label: 'Total Events', value: stats.events, icon: HiOutlineCalendar, gradient: 'stat-indigo', shadow: 'shadow-primary-500/20' },
-    { label: 'Upcoming', value: stats.upcoming, icon: HiOutlineTrendingUp, gradient: 'stat-emerald', shadow: 'shadow-green-500/20' },
-    { label: 'Registrations', value: stats.registrations, icon: HiOutlineUsers, gradient: 'stat-rose', shadow: 'shadow-red-500/20' },
+    { label: 'Total Events', value: stats.events, icon: HiOutlineCalendar, bgColor: 'bg-blue-500' },
+    { label: 'Upcoming Events', value: stats.upcoming, icon: HiOutlineTrendingUp, bgColor: 'bg-green-500' },
+    { label: 'Total Registrations', value: stats.registrations, icon: HiOutlineUsers, bgColor: 'bg-purple-500' },
   ];
 
   const formatDate = (d) => new Intl.DateTimeFormat('en-US', { month: 'short', day: 'numeric', year: 'numeric' }).format(new Date(d));
 
   return (
-    <div className="min-h-screen bg-surface-50 dark:bg-surface-950 hero-pattern">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
         {/* Header */}
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-10">
-          <div className="animate-fade-in-up">
-            <h1 className="text-4xl font-extrabold text-surface-900 dark:text-white tracking-tight">
+        <div className="md:flex md:items-center md:justify-between mb-8">
+          <div className="flex-1 min-w-0">
+            <h2 className="text-2xl font-bold leading-7 text-gray-900 dark:text-white sm:text-3xl sm:truncate">
               Admin Dashboard
-            </h1>
-            <p className="text-surface-500 dark:text-surface-400 mt-2 text-lg">Welcome back, <span className="font-semibold text-surface-700 dark:text-surface-300">{user?.name}</span> 👋</p>
+            </h2>
+            <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
+              Welcome back, {user?.name}. Here's what's happening.
+            </p>
           </div>
-          <Link to="/admin/events/new" className="btn-primary flex items-center gap-2 text-sm self-start animate-fade-in-up" style={{ animationDelay: '0.1s' }}>
-            <HiOutlinePlusCircle className="w-5 h-5" />
-            <span>Create Event</span>
-          </Link>
+          <div className="mt-4 flex md:mt-0 md:ml-4">
+            <Link to="/admin/events/new" 
+              className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+              <HiPlus className="-ml-1 mr-2 h-5 w-5" aria-hidden="true" />
+              Create Event
+            </Link>
+          </div>
         </div>
 
         {/* Stats */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-10">
-          {statCards.map((stat, i) => (
-            <div key={stat.label} className={`${stat.gradient} rounded-2xl p-7 shadow-xl ${stat.shadow} text-white relative overflow-hidden animate-fade-in-up`} style={{ animationDelay: `${i * 0.1}s` }}>
-              <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full -translate-y-8 translate-x-8" />
-              <div className="absolute bottom-0 left-0 w-24 h-24 bg-white/5 rounded-full translate-y-8 -translate-x-8" />
-              <div className="relative z-10 flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-semibold text-white/70 uppercase tracking-wider">{stat.label}</p>
-                  <p className="text-4xl font-extrabold mt-2">
-                    {loading ? <span className="inline-block w-16 h-10 bg-white/10 rounded-lg animate-pulse" /> : stat.value}
-                  </p>
-                </div>
-                <div className="w-14 h-14 bg-white/10 backdrop-blur-sm rounded-2xl flex items-center justify-center">
-                  <stat.icon className="w-7 h-7 text-white/80" />
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-3 mb-8">
+          {statCards.map((stat) => (
+            <div key={stat.label} className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm rounded-lg border border-gray-200 dark:border-gray-700">
+              <div className="p-5">
+                <div className="flex items-center">
+                  <div className="flex-shrink-0">
+                    <div className={`rounded-md p-3 ${stat.bgColor} bg-opacity-10 dark:bg-opacity-20`}>
+                      <stat.icon className={`h-6 w-6 ${stat.bgColor.replace('bg-', 'text-')}`} aria-hidden="true" />
+                    </div>
+                  </div>
+                  <div className="ml-5 w-0 flex-1">
+                    <dl>
+                      <dt className="text-sm font-medium text-gray-500 dark:text-gray-400 truncate">{stat.label}</dt>
+                      <dd>
+                        <div className="text-2xl font-bold text-gray-900 dark:text-white">
+                          {loading ? <span className="inline-block w-12 h-6 bg-gray-200 dark:bg-gray-700 rounded animate-pulse" /> : stat.value}
+                        </div>
+                      </dd>
+                    </dl>
+                  </div>
                 </div>
               </div>
             </div>
           ))}
         </div>
 
-        {/* Recent Events */}
-        <div className="card overflow-hidden animate-fade-in-up" style={{ animationDelay: '0.3s' }}>
-          <div className="flex items-center justify-between px-7 py-5 border-b border-surface-200 dark:border-surface-800">
-            <h2 className="text-xl font-extrabold text-surface-900 dark:text-white">Recent Events</h2>
-            <Link to="/admin/events" className="flex items-center gap-1.5 text-sm text-primary-600 dark:text-primary-400 font-bold hover:underline">
-              View all <HiOutlineArrowRight className="w-3.5 h-3.5" />
+        {/* Recent Events Table */}
+        <div className="bg-white dark:bg-gray-800 shadow-sm rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden">
+          <div className="px-4 py-5 border-b border-gray-200 dark:border-gray-700 sm:px-6 flex justify-between items-center">
+            <h3 className="text-lg leading-6 font-medium text-gray-900 dark:text-white">Recent Events</h3>
+            <Link to="/admin/events" className="text-sm font-medium text-blue-600 hover:text-blue-500 dark:text-blue-400 dark:hover:text-blue-300">
+              View all
             </Link>
           </div>
-
-          {loading ? (
-            <div className="p-6 space-y-3">
-              {[1, 2, 3].map((i) => <div key={i} className="skeleton h-14 w-full" />)}
-            </div>
-          ) : recentEvents.length === 0 ? (
-            <div className="p-16 text-center">
-              <div className="w-16 h-16 bg-surface-100 dark:bg-surface-800 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                <HiOutlineCalendar className="w-8 h-8 text-surface-400" />
+          
+          <div className="overflow-x-auto">
+            {loading ? (
+              <div className="p-6 space-y-4">
+                {[1, 2, 3].map((i) => <div key={i} className="h-10 bg-gray-100 dark:bg-gray-700 rounded animate-pulse" />)}
               </div>
-              <p className="text-surface-500 dark:text-surface-400 font-medium">No events yet. Create your first event!</p>
-            </div>
-          ) : (
-            <div className="overflow-x-auto">
-              <table className="w-full">
-                <thead>
-                  <tr className="table-header">
-                    <th className="text-left px-7 py-4 text-xs font-bold text-surface-500 uppercase tracking-wider">Event</th>
-                    <th className="text-left px-7 py-4 text-xs font-bold text-surface-500 uppercase tracking-wider">Date</th>
-                    <th className="text-left px-7 py-4 text-xs font-bold text-surface-500 uppercase tracking-wider">Location</th>
-                    <th className="text-left px-7 py-4 text-xs font-bold text-surface-500 uppercase tracking-wider">Registrations</th>
-                    <th className="text-left px-7 py-4 text-xs font-bold text-surface-500 uppercase tracking-wider">Actions</th>
+            ) : recentEvents.length === 0 ? (
+              <div className="p-12 text-center text-gray-500 dark:text-gray-400">
+                <HiOutlineCalendar className="mx-auto h-12 w-12 text-gray-400" />
+                <p className="mt-2 text-sm font-medium">No events found.</p>
+              </div>
+            ) : (
+              <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                <thead className="bg-gray-50 dark:bg-gray-900/50">
+                  <tr>
+                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Event</th>
+                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Date</th>
+                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Location</th>
+                    <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Registrations</th>
+                    <th scope="col" className="relative px-6 py-3"><span className="sr-only">Actions</span></th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-surface-100 dark:divide-surface-800">
+                <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
                   {recentEvents.map((event) => (
-                    <tr key={event._id} className="hover:bg-surface-50 dark:hover:bg-surface-800/30 transition-colors duration-200">
-                      <td className="px-7 py-5">
-                        <div className="flex items-center gap-3.5">
-                          {event.image ? (
-                            <img src={event.image} alt="" className="w-11 h-11 rounded-xl object-cover shadow-sm" />
-                          ) : (
-                            <div className="w-11 h-11 bg-gradient-to-br from-primary-400 to-accent-400 rounded-xl shadow-sm" />
-                          )}
-                          <span className="text-sm font-bold text-surface-900 dark:text-surface-100">{event.title}</span>
+                    <tr key={event._id} className="hover:bg-gray-50 dark:hover:bg-gray-700/50">
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <div className="flex items-center">
+                          <div className="h-10 w-10 flex-shrink-0">
+                            {event.image ? (
+                              <img className="h-10 w-10 rounded-md object-cover" src={event.image} alt="" />
+                            ) : (
+                              <div className="h-10 w-10 rounded-md bg-blue-100 dark:bg-blue-900/50 flex items-center justify-center text-blue-600 dark:text-blue-400 font-bold">
+                                {event.title.charAt(0)}
+                              </div>
+                            )}
+                          </div>
+                          <div className="ml-4">
+                            <div className="text-sm font-medium text-gray-900 dark:text-white">{event.title}</div>
+                          </div>
                         </div>
                       </td>
-                      <td className="px-7 py-5 text-sm text-surface-500 dark:text-surface-400 font-medium">{formatDate(event.date)}</td>
-                      <td className="px-7 py-5 text-sm text-surface-500 dark:text-surface-400 font-medium">{event.location}</td>
-                      <td className="px-7 py-5">
-                        <span className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-primary-50 dark:bg-primary-950/40 text-primary-600 dark:text-primary-400 font-bold rounded-full text-xs">
-                          <HiOutlineUsers className="w-3.5 h-3.5" />
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
+                        {formatDate(event.date)}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
+                        {event.location}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <span className="px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900/50 dark:text-blue-300">
                           {event.regCount || 0}
                         </span>
                       </td>
-                      <td className="px-7 py-5">
-                        <Link to={`/admin/events/${event._id}/registrations`} className="text-sm text-primary-600 dark:text-primary-400 font-bold hover:underline">
-                          View →
+                      <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                        <Link to={`/admin/events/${event._id}/registrations`} className="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300">
+                          Manage
                         </Link>
                       </td>
                     </tr>
                   ))}
                 </tbody>
               </table>
-            </div>
-          )}
+            )}
+          </div>
         </div>
+
       </div>
     </div>
   );

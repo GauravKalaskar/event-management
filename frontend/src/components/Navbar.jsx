@@ -9,18 +9,11 @@ const Navbar = () => {
   const location = useLocation();
   const [dark, setDark] = useState(() => localStorage.getItem('theme') === 'dark');
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
     document.documentElement.classList.toggle('dark', dark);
     localStorage.setItem('theme', dark ? 'dark' : 'light');
   }, [dark]);
-
-  useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 10);
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
 
   const handleLogout = () => {
     logout();
@@ -30,119 +23,152 @@ const Navbar = () => {
   const isActive = (path) => location.pathname === path || location.pathname.startsWith(path + '/');
 
   const navLinkClass = (path) =>
-    `relative px-4 py-2 rounded-xl text-sm font-semibold tracking-wide transition-all duration-300 ${
+    `px-3 py-2 rounded-md text-sm font-medium transition-colors ${
       isActive(path)
-        ? 'bg-primary-500/10 text-primary-600 dark:text-primary-400 shadow-sm'
-        : 'text-surface-500 hover:text-surface-900 hover:bg-surface-100/80 dark:text-surface-400 dark:hover:text-surface-100 dark:hover:bg-surface-800/80'
+        ? 'bg-blue-50 text-blue-700 dark:bg-blue-900/50 dark:text-blue-300'
+        : 'text-gray-500 hover:text-gray-900 hover:bg-gray-50 dark:text-gray-300 dark:hover:text-white dark:hover:bg-gray-800'
+    }`;
+
+  const mobileNavLinkClass = (path) =>
+    `block px-3 py-2 rounded-md text-base font-medium ${
+      isActive(path)
+        ? 'bg-blue-50 text-blue-700 dark:bg-blue-900/50 dark:text-blue-300'
+        : 'text-gray-500 hover:text-gray-900 hover:bg-gray-50 dark:text-gray-300 dark:hover:text-white dark:hover:bg-gray-800'
     }`;
 
   const adminLinks = [
-    { path: '/admin', label: '📊 Dashboard' },
-    { path: '/admin/events', label: '📅 Manage Events' },
+    { path: '/admin', label: 'Dashboard' },
+    { path: '/admin/events', label: 'Manage Events' },
   ];
 
   const studentLinks = [
-    { path: '/student', label: '🏠 Dashboard' },
-    { path: '/events', label: '🎪 Browse Events' },
-    { path: '/student/registrations', label: '🎟️ My Registrations' },
+    { path: '/student', label: 'Dashboard' },
+    { path: '/events', label: 'Browse Events' },
+    { path: '/student/registrations', label: 'My Registrations' },
   ];
 
   const links = isAdmin ? adminLinks : studentLinks;
 
   return (
-    <nav className={`sticky top-0 z-50 glass transition-all duration-500 ${scrolled ? 'shadow-lg shadow-surface-900/5 dark:shadow-surface-900/30' : ''}`}>
+    <nav className="bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-[4.5rem]">
-          {/* Logo */}
-          <Link to={isAdmin ? '/admin' : user ? '/student' : '/login'} className="flex items-center gap-3 group">
-            <div className="relative">
-              <div className="w-10 h-10 bg-gradient-to-br from-primary-500 via-primary-600 to-accent-500 rounded-2xl flex items-center justify-center shadow-lg shadow-primary-500/30 group-hover:shadow-primary-500/50 transition-all duration-500 group-hover:scale-105">
-                <HiOutlineAcademicCap className="w-5 h-5 text-white" />
-              </div>
-              <div className="absolute -inset-1 bg-gradient-to-br from-primary-500 to-accent-500 rounded-2xl opacity-0 group-hover:opacity-20 blur transition-opacity duration-500" />
-            </div>
-            <span className="text-xl font-extrabold gradient-text hidden sm:block tracking-tight">CampusEvents</span>
-          </Link>
-
-          {/* Desktop Nav */}
-          <div className="hidden md:flex items-center gap-1">
-            {user && links.map((link) => (
-              <Link key={link.path} to={link.path} className={navLinkClass(link.path)}>
-                {link.label}
+        <div className="flex justify-between h-16">
+          
+          <div className="flex">
+            {/* Logo */}
+            <div className="flex-shrink-0 flex items-center">
+              <Link to={isAdmin ? '/admin' : user ? '/student' : '/login'} className="flex items-center gap-2">
+                <HiOutlineAcademicCap className="h-8 w-8 text-blue-600 dark:text-blue-500" />
+                <span className="font-bold text-xl text-gray-900 dark:text-white tracking-tight hidden sm:block">CampusEvents</span>
               </Link>
-            ))}
+            </div>
+
+            {/* Desktop Nav */}
+            <div className="hidden md:ml-6 md:flex md:items-center md:space-x-4">
+              {user && links.map((link) => (
+                <Link key={link.path} to={link.path} className={navLinkClass(link.path)}>
+                  {link.label}
+                </Link>
+              ))}
+            </div>
           </div>
 
           {/* Right side */}
           <div className="flex items-center gap-2">
+            
             {/* Dark mode toggle */}
             <button
               onClick={() => setDark(!dark)}
-              className="relative p-2.5 rounded-xl text-surface-500 hover:text-surface-700 hover:bg-surface-100 dark:text-surface-400 dark:hover:text-surface-200 dark:hover:bg-surface-800 transition-all duration-300"
-              aria-label="Toggle theme"
+              className="p-2 text-gray-400 hover:text-gray-500 dark:hover:text-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
-              <div className="relative w-5 h-5">
-                {dark ? <HiOutlineSun className="w-5 h-5 absolute inset-0 animate-fade-in" /> : <HiOutlineMoon className="w-5 h-5 absolute inset-0 animate-fade-in" />}
-              </div>
+              <span className="sr-only">Toggle theme</span>
+              {dark ? <HiOutlineSun className="h-5 w-5" /> : <HiOutlineMoon className="h-5 w-5" />}
             </button>
 
             {user ? (
-              <div className="flex items-center gap-3">
-                {/* User avatar */}
-                <div className="hidden sm:flex items-center gap-3 pl-3 pr-4 py-1.5 rounded-2xl bg-surface-100/80 dark:bg-surface-800/80 border border-surface-200/60 dark:border-surface-700/60">
-                  <div className="w-9 h-9 bg-gradient-to-br from-primary-400 via-primary-500 to-accent-500 rounded-xl flex items-center justify-center text-white text-sm font-bold shadow-md shadow-primary-500/20">
-                    {user.name?.charAt(0).toUpperCase()}
-                  </div>
-                  <div className="text-sm leading-tight">
-                    <p className="font-bold text-surface-900 dark:text-surface-100">{user.name}</p>
-                    <p className="text-xs text-surface-500 dark:text-surface-400 capitalize font-medium">{user.role}</p>
-                  </div>
+              <div className="hidden sm:flex items-center gap-4 ml-4">
+                <div className="text-sm text-right">
+                  <div className="font-medium text-gray-900 dark:text-white leading-tight">{user.name}</div>
+                  <div className="text-xs text-gray-500 dark:text-gray-400 capitalize leading-tight">{user.role}</div>
                 </div>
                 <button
                   onClick={handleLogout}
-                  className="flex items-center gap-2 px-4 py-2.5 text-sm font-bold text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-950/50 hover:bg-red-100 dark:hover:bg-red-950/80 border border-red-200/60 dark:border-red-900/60 rounded-xl transition-all duration-300 hover:shadow-md hover:shadow-red-500/10"
+                  className="inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-red-700 bg-red-100 hover:bg-red-200 dark:text-red-400 dark:bg-red-900/30 dark:hover:bg-red-900/50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 transition-colors"
                 >
-                  <HiOutlineLogout className="w-4 h-4" />
-                  <span className="hidden sm:inline">Logout</span>
+                  <HiOutlineLogout className="mr-2 h-4 w-4" />
+                  Logout
                 </button>
               </div>
             ) : (
-              <div className="flex items-center gap-2">
-                <Link to="/login" className="px-5 py-2.5 text-sm font-bold text-surface-600 dark:text-surface-300 hover:text-surface-900 dark:hover:text-white hover:bg-surface-100 dark:hover:bg-surface-800 rounded-xl transition-all duration-300">
+              <div className="hidden sm:flex items-center gap-3">
+                <Link to="/login" className="text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white px-3 py-2 rounded-md text-sm font-medium">
                   Login
                 </Link>
-                <Link to="/register" className="btn-primary text-sm px-5 py-2.5">
-                  <span>Get Started</span>
+                <Link to="/register" className="inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                  Get Started
                 </Link>
               </div>
             )}
 
             {/* Mobile menu button */}
-            <button
-              onClick={() => setMobileOpen(!mobileOpen)}
-              className="md:hidden p-2.5 rounded-xl text-surface-500 hover:bg-surface-100 dark:hover:bg-surface-800 transition-all"
-            >
-              {mobileOpen ? <HiOutlineX className="w-5 h-5" /> : <HiOutlineMenu className="w-5 h-5" />}
-            </button>
+            <div className="flex items-center md:hidden ml-2">
+              <button
+                onClick={() => setMobileOpen(!mobileOpen)}
+                className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-300 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500"
+              >
+                <span className="sr-only">Open main menu</span>
+                {mobileOpen ? <HiOutlineX className="block h-6 w-6" /> : <HiOutlineMenu className="block h-6 w-6" />}
+              </button>
+            </div>
+
           </div>
         </div>
+      </div>
 
-        {/* Mobile nav */}
-        {mobileOpen && (
-          <div className="md:hidden pb-4 space-y-1 animate-slide-down">
+      {/* Mobile nav */}
+      {mobileOpen && (
+        <div className="md:hidden border-t border-gray-200 dark:border-gray-800">
+          <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
             {user && links.map((link) => (
               <Link
                 key={link.path}
                 to={link.path}
                 onClick={() => setMobileOpen(false)}
-                className={`block ${navLinkClass(link.path)}`}
+                className={mobileNavLinkClass(link.path)}
               >
                 {link.label}
               </Link>
             ))}
+            {!user && (
+              <>
+                <Link to="/login" onClick={() => setMobileOpen(false)} className={mobileNavLinkClass('/login')}>Login</Link>
+                <Link to="/register" onClick={() => setMobileOpen(false)} className={mobileNavLinkClass('/register')}>Get Started</Link>
+              </>
+            )}
           </div>
-        )}
-      </div>
+          {user && (
+            <div className="pt-4 pb-3 border-t border-gray-200 dark:border-gray-800">
+              <div className="flex items-center px-5">
+                <div className="flex-shrink-0 h-10 w-10 rounded-full bg-blue-100 dark:bg-blue-900 flex items-center justify-center text-blue-600 dark:text-blue-400 font-bold">
+                  {user.name?.charAt(0).toUpperCase()}
+                </div>
+                <div className="ml-3">
+                  <div className="text-base font-medium leading-none text-gray-800 dark:text-white">{user.name}</div>
+                  <div className="text-sm font-medium leading-none text-gray-500 dark:text-gray-400 mt-1">{user.email}</div>
+                </div>
+              </div>
+              <div className="mt-3 px-2 space-y-1">
+                <button
+                  onClick={handleLogout}
+                  className="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-red-600 hover:text-red-800 hover:bg-red-50 dark:text-red-400 dark:hover:text-red-300 dark:hover:bg-red-900/20"
+                >
+                  Logout
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
+      )}
     </nav>
   );
 };

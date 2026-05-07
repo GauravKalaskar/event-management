@@ -1,107 +1,99 @@
 import { Link } from 'react-router-dom';
-import { HiOutlineCalendar, HiOutlineLocationMarker, HiOutlineUsers, HiOutlineArrowRight } from 'react-icons/hi';
+import { HiOutlineCalendar, HiOutlineLocationMarker, HiOutlineUsers } from 'react-icons/hi';
 
 const EventCard = ({ event, onRegister, isRegistered, showRegister = false, isAdmin = false }) => {
   const eventDate = new Date(event.date);
   const isPast = eventDate < new Date();
   const isFull = event.capacity > 0 && event.registrationCount >= event.capacity;
+  const capacityPercent = event.capacity > 0 ? Math.min(100, ((event.registrationCount || 0) / event.capacity) * 100) : 0;
 
   const formatDate = (date) =>
     new Intl.DateTimeFormat('en-US', { weekday: 'short', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }).format(new Date(date));
 
   return (
-    <div className="group card overflow-hidden animate-fade-in-up">
-      {/* Image */}
-      <div className="relative h-52 overflow-hidden">
+    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden flex flex-col h-full hover:shadow-md transition-shadow">
+      {/* Image Container */}
+      <div className="relative h-48 w-full bg-gray-100 dark:bg-gray-700 flex-shrink-0">
         {event.image ? (
-          <img src={event.image} alt={event.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+          <img src={event.image} alt={event.title} className="w-full h-full object-cover" />
         ) : (
-          <div className="w-full h-full bg-gradient-to-br from-primary-500 via-primary-600 to-accent-500 flex items-center justify-center">
-            <HiOutlineCalendar className="w-16 h-16 text-white/30" />
+          <div className="w-full h-full flex items-center justify-center">
+            <HiOutlineCalendar className="h-12 w-12 text-gray-400" />
           </div>
         )}
-
-        {/* Overlay gradient */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
-
-        {/* Badges */}
-        <div className="absolute top-4 right-4 flex gap-2">
+        
+        {/* Status Badges */}
+        <div className="absolute top-2 right-2 flex flex-col gap-2">
           {isPast && (
-            <span className="px-3 py-1.5 bg-surface-900/70 backdrop-blur-md text-white text-xs font-bold rounded-full border border-white/10">
-              Past Event
+            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800 shadow-sm">
+              Past
             </span>
           )}
           {isFull && !isPast && (
-            <span className="px-3 py-1.5 bg-red-500/80 backdrop-blur-md text-white text-xs font-bold rounded-full border border-white/10">
+            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800 shadow-sm">
               Sold Out
             </span>
           )}
         </div>
-
-        {/* Date badge bottom-left */}
-        <div className="absolute bottom-4 left-4">
-          <div className="px-3 py-1.5 bg-white/90 dark:bg-surface-900/90 backdrop-blur-md rounded-xl text-xs font-bold text-surface-900 dark:text-surface-100 shadow-lg">
-            {formatDate(event.date)}
-          </div>
-        </div>
       </div>
 
       {/* Content */}
-      <div className="p-6">
-        <h3 className="text-lg font-extrabold text-surface-900 dark:text-surface-100 mb-2 line-clamp-1 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors duration-300">
+      <div className="p-5 flex-1 flex flex-col">
+        <h3 className="text-lg font-bold text-gray-900 dark:text-white truncate" title={event.title}>
           {event.title}
         </h3>
-        <p className="text-sm text-surface-500 dark:text-surface-400 mb-5 line-clamp-2 leading-relaxed">
+        
+        <p className="mt-1 text-sm text-gray-500 dark:text-gray-400 line-clamp-2 min-h-[2.5rem]">
           {event.description}
         </p>
 
-        <div className="space-y-2.5 mb-5">
-          <div className="flex items-center gap-2.5 text-sm text-surface-600 dark:text-surface-400">
-            <div className="w-8 h-8 bg-accent-50 dark:bg-accent-900/20 rounded-lg flex items-center justify-center shrink-0">
-              <HiOutlineLocationMarker className="w-4 h-4 text-accent-500" />
-            </div>
-            <span className="truncate font-medium">{event.location}</span>
+        <div className="mt-4 space-y-2 flex-1">
+          <div className="flex items-center text-sm text-gray-500 dark:text-gray-400">
+            <HiOutlineCalendar className="flex-shrink-0 mr-1.5 h-4 w-4 text-gray-400" />
+            <span className="truncate">{formatDate(event.date)}</span>
           </div>
+          
+          <div className="flex items-center text-sm text-gray-500 dark:text-gray-400">
+            <HiOutlineLocationMarker className="flex-shrink-0 mr-1.5 h-4 w-4 text-gray-400" />
+            <span className="truncate">{event.location}</span>
+          </div>
+
           {event.capacity > 0 && (
-            <div className="flex items-center gap-2.5 text-sm text-surface-600 dark:text-surface-400">
-              <div className="w-8 h-8 bg-green-50 dark:bg-green-900/20 rounded-lg flex items-center justify-center shrink-0">
-                <HiOutlineUsers className="w-4 h-4 text-green-500" />
+            <div className="pt-2">
+              <div className="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400 mb-1">
+                <div className="flex items-center">
+                  <HiOutlineUsers className="flex-shrink-0 mr-1.5 h-4 w-4 text-gray-400" />
+                  <span>{event.registrationCount || 0} / {event.capacity} Registered</span>
+                </div>
+                <span>{Math.round(capacityPercent)}%</span>
               </div>
-              <div className="flex-1">
-                <div className="flex items-center justify-between mb-1">
-                  <span className="font-medium">{event.registrationCount || 0} / {event.capacity}</span>
-                  <span className="text-xs text-surface-400">{Math.round(((event.registrationCount || 0) / event.capacity) * 100)}%</span>
-                </div>
-                <div className="w-full bg-surface-200 dark:bg-surface-700 rounded-full h-1.5">
-                  <div
-                    className="bg-gradient-to-r from-green-500 to-emerald-400 h-1.5 rounded-full transition-all duration-500"
-                    style={{ width: `${Math.min(100, ((event.registrationCount || 0) / event.capacity) * 100)}%` }}
-                  />
-                </div>
+              <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-1.5">
+                <div className="bg-blue-600 h-1.5 rounded-full" style={{ width: `${capacityPercent}%` }} />
               </div>
             </div>
           )}
         </div>
 
-        <div className="flex gap-2.5">
+        {/* Actions */}
+        <div className="mt-5 flex items-center justify-between gap-3 pt-4 border-t border-gray-100 dark:border-gray-700">
           <Link
             to={isAdmin ? `/admin/events/${event._id}/registrations` : `/events/${event._id}`}
-            className="flex-1 flex items-center justify-center gap-1.5 px-4 py-2.5 text-sm font-bold text-primary-600 dark:text-primary-400 bg-primary-50 dark:bg-primary-950/40 hover:bg-primary-100 dark:hover:bg-primary-950/60 rounded-xl transition-all duration-300"
+            className="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-colors"
           >
-            {isAdmin ? 'Registrations' : 'Details'}
-            <HiOutlineArrowRight className="w-3.5 h-3.5" />
+            {isAdmin ? 'Manage' : 'View Details'}
           </Link>
+          
           {showRegister && !isPast && !isFull && (
             <button
               onClick={() => onRegister(event._id)}
               disabled={isRegistered}
-              className={`flex-1 px-4 py-2.5 text-sm font-bold rounded-xl transition-all duration-300 ${
+              className={`inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm transition-colors ${
                 isRegistered
-                  ? 'bg-green-50 dark:bg-green-950/40 text-green-600 dark:text-green-400 cursor-default border border-green-200 dark:border-green-900'
-                  : 'btn-primary'
+                  ? 'bg-green-100 text-green-800 dark:bg-green-900/50 dark:text-green-300 cursor-default'
+                  : 'text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500'
               }`}
             >
-              <span>{isRegistered ? '✓ Registered' : 'Register Now'}</span>
+              {isRegistered ? '✓ Registered' : 'Register Now'}
             </button>
           )}
         </div>

@@ -1,4 +1,4 @@
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useAuth } from './context/AuthContext';
@@ -14,25 +14,29 @@ import StudentDashboard from './pages/StudentDashboard';
 import EventsPage from './pages/EventsPage';
 import EventDetails from './pages/EventDetails';
 import MyRegistrations from './pages/MyRegistrations';
+import Footer from './components/Footer';
 
 function App() {
   const { user, loading } = useAuth();
+  const location = useLocation();
+  const isAuthPage = ['/login', '/register'].includes(location.pathname);
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-surface-50 dark:bg-surface-950">
+      <div className="min-h-screen flex items-center justify-center bg-gray-50 dark:bg-gray-900">
         <div className="text-center">
-          <div className="w-16 h-16 border-4 border-primary-200 border-t-primary-600 rounded-full animate-spin mx-auto mb-4" />
-          <p className="text-surface-500 dark:text-surface-400 font-medium">Loading...</p>
+          <div className="w-16 h-16 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin mx-auto mb-4" />
+          <p className="text-gray-500 dark:text-gray-400 font-medium">Loading...</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-surface-50 dark:bg-surface-950">
-      <Navbar />
-      <Routes>
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex flex-col w-full">
+      {!isAuthPage && <Navbar />}
+      <div className="flex-1 w-full flex flex-col">
+        <Routes>
         {/* Public routes */}
         <Route path="/login" element={user ? <Navigate to={user.role === 'admin' ? '/admin' : '/student'} /> : <LoginPage />} />
         <Route path="/register" element={user ? <Navigate to={user.role === 'admin' ? '/admin' : '/student'} /> : <RegisterPage />} />
@@ -54,6 +58,8 @@ function App() {
         <Route path="/" element={<Navigate to={user ? (user.role === 'admin' ? '/admin' : '/student') : '/login'} />} />
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
+      </div>
+      {!isAuthPage && <Footer />}
 
       <ToastContainer
         position="top-right"
