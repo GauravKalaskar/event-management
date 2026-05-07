@@ -5,8 +5,7 @@ const generateToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: '7d' });
 };
 
-// @desc    Register a new user
-// @route   POST /api/auth/register
+
 exports.register = async (req, res, next) => {
   try {
     const { name, email, password, role } = req.body;
@@ -21,7 +20,7 @@ exports.register = async (req, res, next) => {
       return res.status(400).json({ message: 'An account with this email already exists.' });
     }
 
-    // Force all new registrations to be students
+  
     const user = await User.create({ name, email, password, role: 'student' });
 
     const token = generateToken(user._id);
@@ -40,8 +39,7 @@ exports.register = async (req, res, next) => {
   }
 };
 
-// @desc    Login user
-// @route   POST /api/auth/login
+
 exports.login = async (req, res, next) => {
   try {
     const { email, password } = req.body;
@@ -50,11 +48,11 @@ exports.login = async (req, res, next) => {
       return res.status(400).json({ message: 'Please provide email and password.' });
     }
 
-    // Hardcoded Admin Intercept
+    
     if (email === 'admin123@gmail.com' && password === '233862') {
       let adminUser = await User.findOne({ email: 'admin123@gmail.com' });
       
-      // Auto-create the admin in the database if it doesn't exist so they have a valid ObjectId
+      
       if (!adminUser) {
         adminUser = await User.create({
           name: 'admin',
@@ -102,8 +100,7 @@ exports.login = async (req, res, next) => {
   }
 };
 
-// @desc    Get current user profile
-// @route   GET /api/auth/profile
+
 exports.getProfile = async (req, res, next) => {
   try {
     const user = await User.findById(req.user.id);

@@ -1,8 +1,7 @@
 const Event = require('../models/Event');
 const Registration = require('../models/Registration');
 
-// @desc    Get all events (with search & filter)
-// @route   GET /api/events
+
 exports.getEvents = async (req, res, next) => {
   try {
     const { search, location, startDate, endDate, page = 1, limit = 12 } = req.query;
@@ -49,8 +48,7 @@ exports.getEvents = async (req, res, next) => {
   }
 };
 
-// @desc    Get single event
-// @route   GET /api/events/:id
+
 exports.getEvent = async (req, res, next) => {
   try {
     const event = await Event.findById(req.params.id).populate('createdBy', 'name email');
@@ -58,7 +56,7 @@ exports.getEvent = async (req, res, next) => {
       return res.status(404).json({ message: 'Event not found.' });
     }
 
-    // Get registration count
+
     const registrationCount = await Registration.countDocuments({ eventId: event._id });
 
     res.json({ ...event.toObject(), registrationCount });
@@ -67,8 +65,7 @@ exports.getEvent = async (req, res, next) => {
   }
 };
 
-// @desc    Create event (Admin)
-// @route   POST /api/events
+
 exports.createEvent = async (req, res, next) => {
   try {
     const { title, description, date, location, image, capacity } = req.body;
@@ -93,8 +90,7 @@ exports.createEvent = async (req, res, next) => {
   }
 };
 
-// @desc    Update event (Admin)
-// @route   PUT /api/events/:id
+//
 exports.updateEvent = async (req, res, next) => {
   try {
     const event = await Event.findById(req.params.id);
@@ -118,8 +114,7 @@ exports.updateEvent = async (req, res, next) => {
   }
 };
 
-// @desc    Delete event (Admin)
-// @route   DELETE /api/events/:id
+
 exports.deleteEvent = async (req, res, next) => {
   try {
     const event = await Event.findById(req.params.id);
@@ -127,7 +122,7 @@ exports.deleteEvent = async (req, res, next) => {
       return res.status(404).json({ message: 'Event not found.' });
     }
 
-    // Delete all registrations for this event
+    
     await Registration.deleteMany({ eventId: event._id });
     await event.deleteOne();
 
